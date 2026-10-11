@@ -106,7 +106,7 @@ def ask():
 
     try:
         completion = client.chat.completions.create(
-            model="qwen/qwen3.6-27b",
+            model="openai/gpt-oss-120b",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.2,
         )
