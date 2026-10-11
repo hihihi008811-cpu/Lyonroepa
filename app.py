@@ -9,12 +9,13 @@ app = Flask(__name__)
 
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 client = Groq(api_key=GROQ_API_KEY)
+
 HTML_TEMPLATE = """<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trợ Lý AI RAG Cloud 24/7</title>
+    <title>🤖 NerVous - Trợ Lý RAG Cloud 24/7</title>
     <style>
         body { font-family: sans-serif; background: #121212; color: #e0e0e0; margin: 0; padding: 15px; display: flex; flex-direction: column; height: 92vh; }
         h2 { text-align: center; color: #4CAF50; }
@@ -28,9 +29,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     </style>
 </head>
 <body>
-    <h2>🤖 Trợ Lý RAG Cloud 24/7</h2>
+    <h2>🤖 NerVous - Trợ Lý RAG Cloud 24/7</h2>
     <div id="chat-box">
-        <div class="message"><span class="ai">AI:</span> Chào bạn! Hệ thống RAG Cloud đã sẵn sàng phục vụ 24/7.</div>
+        <div class="message"><span class="ai">NerVous:</span> Chào bạn! Tôi là NerVous, hệ thống RAG Cloud đã sẵn sàng phục vụ 24/7.</div>
     </div>
     <div class="input-group">
         <input type="text" id="query" placeholder="Nhập câu hỏi..." onkeypress="if(event.key === 'Enter') sendQuery()">
@@ -49,7 +50,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             chatBox.scrollTop = chatBox.scrollHeight;
 
             const loadingId = 'loading-' + Date.now();
-            chatBox.innerHTML += `<div class="message" id="${loadingId}"><span class="ai">AI:</span> 🔍 Đang tìm kiếm và xử lý...</div>`;
+            chatBox.innerHTML += `<div class="message" id="${loadingId}"><span class="ai">NerVous:</span> 🔍 Đang tìm kiếm và xử lý...</div>`;
             chatBox.scrollTop = chatBox.scrollHeight;
 
             try {
@@ -59,9 +60,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                     body: JSON.stringify({ query: query })
                 });
                 const data = await response.json();
-                document.getElementById(loadingId).innerHTML = `<span class="ai">AI:</span> ${data.result.replace(/\\n/g, '<br>')}`;
+                document.getElementById(loadingId).innerHTML = `<span class="ai">NerVous:</span> ${data.result.replace(/\\n/g, '<br>')}`;
             } catch (error) {
-                document.getElementById(loadingId).innerHTML = `<span class="ai">AI:</span> Lỗi kết nối.`;
+                document.getElementById(loadingId).innerHTML = `<span class="ai">NerVous:</span> Lỗi kết nối.`;
             }
             chatBox.scrollTop = chatBox.scrollHeight;
         }
@@ -100,14 +101,17 @@ def ask():
     ngu_canh = tim_kiem_web(cau_hoi)
     
     if ngu_canh:
-        prompt = f"Dựa vào thông tin chuẩn sau đây:\n\"{ngu_canh}\"\n\nHãy trả lời câu hỏi: {cau_hoi}. Trả lời ngắn gọn, chính xác bằng tiếng Việt. Tuyệt đối không dùng LaTeX."
+        user_content = f"Dựa vào thông tin chuẩn sau đây:\n\"{ngu_canh}\"\n\nHãy trả lời câu hỏi: {cau_hoi}. Trả lời ngắn gọn, chính xác bằng tiếng Việt. Tuyệt đối không dùng LaTeX."
     else:
-        prompt = f"Trả lời ngắn gọn, chính xác bằng tiếng Việt: {cau_hoi}"
+        user_content = f"Trả lời ngắn gọn, chính xác bằng tiếng Việt: {cau_hoi}"
 
     try:
         completion = client.chat.completions.create(
             model="openai/gpt-oss-120b",
-            messages=[{"role": "user", "content": prompt}],
+            messages=[
+                {"role": "system", "content": "Bạn tên là NerVous, một trợ lý trí tuệ nhân tạo được phát triển cho hệ thống RAG Cloud cá nhân. Tuyệt đối không bao giờ được xưng là ChatGPT hay do OpenAI phát triển."},
+                {"role": "user", "content": user_content}
+            ],
             temperature=0.2,
         )
         phan_hoi = completion.choices[0].message.content
