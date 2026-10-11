@@ -109,10 +109,13 @@ def ask():
         completion = client.chat.completions.create(
             model="openai/gpt-oss-120b",
             messages=[
-                {"role": "system", "content": "Bạn tên là NerVous, một trợ lý trí tuệ nhân tạo được phát triển cho hệ thống RAG Cloud cá nhân. Tuyệt đối không bao giờ được xưng là ChatGPT hay do OpenAI phát triển."},
+                {
+                    "role": "system", 
+                    "content": "Bạn tên là NerVous, một trợ lý trí tuệ nhân tạo thân thiện, vui vẻ, thông minh và tràn đầy năng lượng. Hãy trả lời các câu hỏi bằng tiếng Việt một cách nhiệt tình, lịch sự, có cảm xúc tích cực và tuyệt đối không bao giờ được xưng là ChatGPT."
+                },
                 {"role": "user", "content": user_content}
             ],
-            temperature=0.2,
+            temperature=0.7,
         )
         phan_hoi = completion.choices[0].message.content
     except Exception as e:
