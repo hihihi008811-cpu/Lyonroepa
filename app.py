@@ -7,7 +7,7 @@ from groq import Groq
 
 app = Flask(__name__)
 
-# Điền Groq API Key
+# Groq API Key
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "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")
 client = Groq(api_key=GROQ_API_KEY)
 
@@ -119,4 +119,4 @@ def ask():
     return jsonify({'result': phan_hoi})
 
 if __name__ == '__main__':
-    app
+    app.run(host='0.0.0.0', port=5000)
