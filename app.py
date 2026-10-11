@@ -110,8 +110,8 @@ def ask():
 
     try:
         # Gọi mô hình Qwen 2.5 72B hoặc Llama 3 siêu mạnh qua Groq Cloud
-        completion = client.chat.completions.create(
-            model="qwen-2.5-32b", # Hoặc "llama-3.3-70b-versatile"
+            completion = client.chat.completions.create(
+            model="llama-3.1-8b-instant",  # Đổi thành model này chạy cực nhanh và chuẩn
             messages=[{"role": "user", "content": prompt}],
             temperature=0.2,
         )
