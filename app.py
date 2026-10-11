@@ -7,7 +7,7 @@ from groq import Groq
 
 app = Flask(__name__)
 
-# Điền Groq API Key của bạn vào đây (Hoặc đặt biến môi trường GROQ_API_KEY)
+# Điền Groq API Key của bạn vào đây
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "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")
 client = Groq(api_key=GROQ_API_KEY)
 
@@ -109,9 +109,8 @@ def ask():
         prompt = f"Trả lời ngắn gọn, chính xác bằng tiếng Việt: {cau_hoi}"
 
     try:
-        # Gọi mô hình Qwen 2.5 72B hoặc Llama 3 siêu mạnh qua Groq Cloud
-            completion = client.chat.completions.create(
-            model="llama-3.1-8b-instant",  # Đổi thành model này chạy cực nhanh và chuẩn
+        completion = client.chat.completions.create(
+            model="llama-3.1-8b-instant",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.2,
         )
