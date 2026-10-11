@@ -7,10 +7,8 @@ from groq import Groq
 
 app = Flask(__name__)
 
-# Groq API Key
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "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")
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 client = Groq(api_key=GROQ_API_KEY)
-
 HTML_TEMPLATE = """<!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -108,7 +106,7 @@ def ask():
 
     try:
         completion = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
+            model="qwen/qwen3.6-27b",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.2,
         )
