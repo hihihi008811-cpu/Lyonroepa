@@ -35,6 +35,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           width: 50%;
           box-shadow: 0px 0px 20px rgb(100, 0, 100);
           padding: 8px;
+          overflow-y: auto;
           border: 2px solid black;
           border-radius: 10px;  
           transition: box-shadow 0.5s ease-in;
