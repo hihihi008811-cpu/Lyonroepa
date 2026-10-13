@@ -43,14 +43,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         #swbs.active { 
           box-shadow: 0px 0px 25px rgba(246, 169, 255, 0.9); 
         }
-          #swb {
+        #swb {
           color: yellow;
           border: 2px solid gray;
           padding: 4px 12px;
           font-size: 12px;
           position: absolute;
           top: 20px;
-          right: 20px; /* Đưa ra góc phải cho gọn, không bị đè lên tiêu đề */
+          right: 20px;
           text-shadow: 0px 0px 5px rgb(200, 200, 200);
           font-family: system-ui, sans-serif;
           background-color: rgba(255, 255, 255, 0.87);
@@ -66,16 +66,16 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           border: 1px solid #333;
           box-shadow: 0px 0px 20px rgba(253, 149, 235, 0.3);
           padding: 12px; 
-          overflow-x:auto;
+          overflow-x: auto;
+          overflow-y: auto;
           border-radius: 8px; 
-          background: rgba(100, 8, 9,0.05); 
+          background: rgba(100, 8, 9, 0.05); 
           margin-bottom: 12px; 
           transition: box-shadow 0.5s ease-in;
         }
         #chat-box.active {
           box-shadow: 0px 0px 25px rgba(200, 100, 200, 0.5);
         }
-
         .message { 
           margin-bottom: 12px; 
           line-height: 1.4; 
@@ -87,7 +87,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           border-radius: 8px;
           border: 1px solid #444;
         }
-
         .user { 
           color: #64B5F6; 
           font-weight: bold; 
@@ -95,7 +94,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         .ai { 
           color: #81C784; 
         }
-
         .input-group { 
           display: flex; 
           gap: 8px; 
@@ -135,7 +133,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         <input type="text" id="query" placeholder="Nhập câu hỏi..." onkeypress="if(event.key === 'Enter') sendQuery()">
         <button class="send-btn" onclick="sendQuery()">Gửi</button>
     </div>
-</body>
 
     <script>
        let a = 0; 
@@ -146,7 +143,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
        swbButton.addEventListener("click", function() {
             a += 1;
-            console.log("Số lần bấm hiện tại:", a);
             swbButton.classList.toggle("active");
             swbsElement.classList.toggle("active");
             chatBoxElement.classList.toggle("active");
@@ -163,6 +159,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             const chatBox = document.getElementById('chat-box');
             const query = inputField.value.trim();
             if (!query) return;
+            
             chatBox.innerHTML += `<div class="message"><div class="msg-bubble"><span class="user">Bạn:</span> ${query}</div></div>`;
             inputField.value = '';
             chatBox.scrollTop = chatBox.scrollHeight;
@@ -178,7 +175,13 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                     body: JSON.stringify({ query: query })
                 });
                 const data = await response.json();
-                document.getElementById(loadingId).innerHTML = `<div class="msg-bubble"><span class="ai">NerVous:</span> ${data.result.replace(/\\n/g, '<br>')}</div>`;
+                
+                const targetDiv = document.getElementById(loadingId);
+                targetDiv.innerHTML = `<div class="msg-bubble"><span class="ai">NerVous:</span> ${data.result.replace(/\\n/g, '<br>')}</div>`;
+                
+                if (window.MathJax) {
+                    MathJax.typesetPromise([targetDiv]).catch((err) => console.log(err));
+                }
             } catch (error) {
                 document.getElementById(loadingId).innerHTML = `<div class="msg-bubble"><span class="ai">NerVous:</span> Lỗi kết nối.</div>`;
             }
@@ -224,7 +227,7 @@ def ask():
     ngu_canh = tim_kiem_web(cau_hoi)
     
     if ngu_canh:
-        user_content = f"Dựa vào thông tin chuẩn sau đây:\n\"{ngu_canh}\"\n\nHãy trả lời câu hỏi: {cau_hoi}. Trả lời ngắn gọn, chính xác bằng tiếng Việt. Tuyệt đối không dùng LaTeX."
+        user_content = f"Dựa vào thông tin chuẩn sau đây:\n\"{ngu_canh}\"\n\nHãy trả lời câu hỏi: {cau_hoi}. Trả lời ngắn gọn, chính xác bằng tiếng Việt."
     else:
         user_content = f"Trả lời ngắn gọn, chính xác bằng tiếng Việt: {cau_hoi}"
 
