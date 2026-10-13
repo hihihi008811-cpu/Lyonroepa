@@ -66,8 +66,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           border: 1px solid #333;
           box-shadow: 0px 0px 20px rgba(253, 149, 235, 0.3);
           padding: 12px; 
-          overflow-x: auto;
-          overflow-y: auto;
+          overflow-x:auto;
           border-radius: 8px; 
           background: rgba(100, 8, 9,0.05); 
           margin-bottom: 12px; 
@@ -84,6 +83,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         .msg-bubble {
           background-color: rgba(150, 150, 150, 0.15);
           padding: 8px 12px;
+          overflow-y: auto;
           border-radius: 8px;
           border: 1px solid #444;
         }
